@@ -1,9 +1,7 @@
 import curses
 import random
-import sys
 import time
 
-SIZE = 40
 SEED = 20180926
 ALIVE = '1'
 DEAD = ' '
