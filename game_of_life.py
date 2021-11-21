@@ -13,18 +13,12 @@ class GameOfLife:
         random.seed(SEED)
         flat_world = random.choices([DEAD, ALIVE], k = (size * size))
         self.world = [flat_world[i*size:(i+1)*size] for i in range(size)]
-        self.screen = curses.initscr()
 
-    def __del__(self):
-        curses.endwin()
-
-    def _print(self):
-        self.screen.clear()
+    def __str__(self):
         world = ''
         for i in range(len(self.world)):
             world += ' '.join(self.world[i]) + '\n'
-        self.screen.addstr(world)
-        self.screen.refresh()
+        return world
 
     def _count_alive_neighbors(self, row: int, col: int):
         if len(self.world) == 0 or len(self.world[0]) == 0:
@@ -51,7 +45,6 @@ class GameOfLife:
         return alive_neighbors   
 
     def step(self):
-        self._print()
         new_dead = []
         new_alive = []
         for i in range(len(self.world)):
@@ -77,10 +70,15 @@ class GameOfLife:
 def main():
     size = int(input('Please enter the size of the world '))
     step_count = int(input('Please enter the number of steps you would like to run '))
+    screen = curses.initscr()
     g = GameOfLife(size)
     for _ in range(step_count):
+        screen.clear()
+        screen.addstr(str(g))
+        screen.refresh()
         g.step()
         time.sleep(0.5)
+    curses.endwin()
 
 
 if __name__ == "__main__":
